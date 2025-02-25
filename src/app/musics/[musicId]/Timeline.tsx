@@ -1,12 +1,9 @@
-import { useState } from "react";
 import { BsPlayFill, BsSoundwave, BsArrowCounterclockwise, BsPauseFill } from "react-icons/bs";
 import { AiOutlinePlus, AiOutlineMinus } from "react-icons/ai";
 import { Instrument } from "@/types/instruments";
 import { useStorage, useMutation } from "@liveblocks/react";
 
 interface TimelineProps {
-  count: number;
-  setCount: (val: number) => void;
   setInstruments: (val: Instrument[]) => void;
   instruments: Instrument[];
   currentBeat: number;
@@ -17,8 +14,6 @@ interface TimelineProps {
 }
 
 const Timeline: React.FC<TimelineProps> = ({
-  count,
-  setCount,
   setInstruments,
   instruments,
   setCurrentBeat,
@@ -32,7 +27,6 @@ const Timeline: React.FC<TimelineProps> = ({
   const handleAddTime = () => {
     const newDuration = duration + 1;
     setDuration(newDuration);
-    setCount(count + 4);
     setInstruments(
       instruments.map((instrument) => ({
         ...instrument,
@@ -45,7 +39,6 @@ const Timeline: React.FC<TimelineProps> = ({
     if (duration > 1) {
       const newDuration = duration - 1;
       setDuration(newDuration);
-      setCount(count - 4);
       setInstruments(
         instruments.map((instrument) => ({
           ...instrument,

@@ -6,7 +6,6 @@ import { FaDeleteLeft } from "react-icons/fa6";
 import { getRandomHexColor } from "@/utils/getRandomColor";
 import { Instrument } from "@/types/instruments";
 import { useOthers } from "@liveblocks/react";
-import { twMerge } from "tailwind-merge";
 
 interface InstrumentsProps {
   instruments: Instrument[];

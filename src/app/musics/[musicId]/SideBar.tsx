@@ -5,7 +5,6 @@ import { Instrument } from "@/types/instruments";
 interface SideBarProps {
   children?: React.ReactNode;
   count: number;
-  setCount: (count: number) => void;
   instruments: Instrument[];
   setInstruments: (instruments: Instrument[]) => void;
   currentBeat: number;
@@ -17,7 +16,6 @@ interface SideBarProps {
 
 export const SideBar: React.FC<SideBarProps> = ({
   children,
-  setCount,
   count,
   instruments,
   setInstruments,
@@ -30,8 +28,6 @@ export const SideBar: React.FC<SideBarProps> = ({
   return (
     <div className="w-full h-full flex flex-col bg-neutral-900 rounded-lg p-1">
       <Timeline
-        setCount={setCount}
-        count={count}
         setInstruments={setInstruments}
         instruments={instruments}
         currentBeat={currentBeat}

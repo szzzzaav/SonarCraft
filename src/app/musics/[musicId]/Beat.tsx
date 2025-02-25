@@ -10,12 +10,12 @@ import { useStorage, useMutation } from "@liveblocks/react";
 interface BeatMakerProps {}
 
 const Beat: React.FC<BeatMakerProps> = () => {
-  const [col, setCol] = useState(4);
   const [currentBeat, setCurrentBeat] = useState(0);
   const [startBeat, setStartBeat] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [samplers, setSamplers] = useState<Record<string, Tone.Sampler>>({});
   // 初始化音频采样器
+  const col = (useStorage((root) => root.timeline) ?? 1) * 4;
 
   const instruments = useStorage((root) => root.instruments) ?? [];
   const setInstruments = useMutation(({ storage }, instruments: Instrument[]) => {
@@ -105,7 +105,6 @@ const Beat: React.FC<BeatMakerProps> = () => {
       <div className="sticky left-2 z-20">
         <SideBar
           count={col}
-          setCount={setCol}
           instruments={instruments}
           setInstruments={setInstruments}
           currentBeat={currentBeat}
