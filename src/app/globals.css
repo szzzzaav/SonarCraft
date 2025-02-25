@@ -1,0 +1,296 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import "@liveblocks/react-ui/styles.css";
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  color: #fff;
+  user-select: none;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+body::-webkit-scrollbar {
+  display: none;
+}
+
+.headMarker {
+  width: 1px;
+  height: 100%;
+  background: #fff;
+}
+
+.cursor {
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  background-color: white;
+  mix-blend-mode: difference;
+  position: fixed;
+  top: 0;
+  left: 0;
+  will-change: transform;
+  pointer-events: none;
+  z-index: 999;
+}
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+    --primary: 240 5.9% 10%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 240 10% 3.9%;
+    --chart-1: 12 76% 61%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+    --radius: 0.5rem;
+  }
+  .dark {
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 240 5.9% 10%;
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+    --accent: 240 3.7% 15.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 240 4.9% 83.9%;
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+  }
+}
+
+.hero__title {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  mix-blend-mode: color-burn;
+  letter-spacing: -0.0125em;
+  font-weight: 900;
+  white-space: nowrap;
+  text-transform: uppercase;
+  margin-bottom: 0;
+  line-height: 1;
+  position: relative;
+  z-index: 2;
+  mix-blend-mode: difference;
+  margin: 0;
+  margin-top: 2rem;
+  transform: scaleY(1.2);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+.grid-cols-30 {
+  grid-template-columns: repeat(30, minmax(0, 1fr));
+}
+
+.grid-cols-32 {
+  grid-template-columns: repeat(32, minmax(0, 1fr));
+}
+
+.custom-scrollbar {
+  &::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #2d2d2d;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #4a4a4a;
+    border-radius: 4px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: #5a5a5a;
+  }
+
+  scrollbar-width: thin;
+  scrollbar-color: #4a4a4a #2d2d2d;
+}
+
+.custom-scrollbar::-webkit-scrollbar-corner {
+  background: #2d2d2d;
+}
+
+.VolumeKnob-Circle {
+  fill: none;
+}
+
+.VolumeKnob-Circle:nth-child(1) {
+  stroke-width: 15px;
+  stroke-dasharray: 660;
+  transform-origin: center;
+  transform: rotate(135deg);
+  stroke-linecap: round;
+}
+.VolumeKnob-Circle:nth-child(2) {
+  stroke-width: 15px;
+  stroke-dasharray: 880;
+  stroke-dashoffset: calc(880 - (660 * 0) / 100);
+  transform-origin: center;
+  transform: rotate(135deg);
+  stroke-linecap: round;
+}
+
+.menu-toggle:hover .menu-copy {
+  left: 20px;
+}
+
+.menu-toggle:hover .menu-toggle-icon {
+  clip-path: circle(35% at 50% 50%) !important;
+}
+
+.menu-toggle:hover .hamburger {
+  top: 50%;
+  opacity: 1;
+}
+
+.carousel,
+.pleaseLogIn,
+.yourwork,
+.trending,
+.enter {
+  animation: enter 0.3s forwards ease-in-out;
+}
+
+@keyframes enter {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.landing-board-row {
+  flex: 1;
+  display: flex;
+  gap: 0.25em;
+}
+
+.landing-board-tile {
+  flex: 1;
+  position: relative;
+  transform-style: preserve-3d;
+}
+
+.landing-board-tile-face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 0.5em;
+  overflow: hidden;
+}
+
+.landing-board-tile-front {
+  background-color: darkslategray;
+}
+
+.landing-board-tile-back {
+  background-color: darkslateblue;
+  transform: rotateX(180deg);
+}
+
+.landing-board-tile-front::before,
+.landing-board-tile-back::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: 600% 600%;
+  background-position: inherit;
+  clip-path: inset(0 round 0.25em);
+}
+
+.landing-board-tile-front::before,
+.landing-board-tile-front-inner {
+  background-image: url("/images/landing/font.png");
+}
+
+.landing-board-tile-back::before {
+  background-image: url("/images/landing/back.png");
+}
+
+.landing-board-block {
+  width: 50px;
+  height: 50px;
+  border: 0.5px solid transparent;
+  transition: border-color 0.3s ease;
+}
+
+.highlight {
+  border-color: #fff;
+}
+
+.lb-composer-editor p {
+  color: #fff;
+  mix-blend-mode: difference;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+div[data-radix-popper-content-wrapper] {
+  z-index: 50 !important;
+}
