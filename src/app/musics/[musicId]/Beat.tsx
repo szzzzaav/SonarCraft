@@ -10,8 +10,8 @@ import { useStorage, useMutation } from "@liveblocks/react";
 interface BeatMakerProps {}
 
 const Beat: React.FC<BeatMakerProps> = () => {
-  const [currentBeat, setCurrentBeat] = useState(0);
-  const [startBeat, setStartBeat] = useState(0);
+  const [currentBeat, setCurrentBeat] = useState(-1);
+  const [startBeat, setStartBeat] = useState(-1);
   const [isPlaying, setIsPlaying] = useState(false);
   const [samplers, setSamplers] = useState<Record<string, Tone.Sampler>>({});
   // 初始化音频采样器
