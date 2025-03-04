@@ -6,7 +6,6 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { twMerge } from "tailwind-merge";
 
 import { templates } from "./templates";
-import { useRouter } from "next/navigation";
 import { useMutation } from "convex/react";
 import { api } from "../../../convex/_generated/api";
 import Image from "next/image";
@@ -67,7 +66,6 @@ const Card = ({ img, description, empty, onClick }: CardProps) => {
 };
 
 export const Create = () => {
-  const router = useRouter();
   const create = useMutation(api.songs.create);
   const [isCreating, setIsCreating] = useState(false);
   const stepsRef = useRef<HTMLDivElement>(null);
@@ -78,7 +76,7 @@ export const Create = () => {
     setIsCreating(true);
     create({ title, initialContent })
       .then((songId) => {
-        router.push(`/musics/${songId}`);
+        window.open(`/musics/${songId}`);
       })
       .finally(() => {
         setIsCreating(false);

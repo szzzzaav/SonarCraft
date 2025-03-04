@@ -1,5 +1,6 @@
 "use client";
 
+import { use, useEffect, useState } from "react";
 import {
   Carousel,
   CarouselContent,
@@ -7,51 +8,83 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import { Skeleton } from "@/components/ui/skeleton";
-import { usePaginatedQuery, useQuery } from "convex/react";
+import { usePaginatedQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
 import { Cards } from "./cards";
-
-const LoadingCarousel = () => {
-  return Array.from({ length: 2 }).map((_, index) => (
-    <CarouselItem key={index} className="w-screen h-screen">
-      <div className="w-full h-auto flex items-center justify-center flex-col">
-        <div className="flex w-full h-screen justify-between items-center gap-10">
-          <div className="w-[50%] h-[70vh]">
-            <Skeleton className="w-full h-full bg-zinc-500" />
-          </div>
-          <div className="w-[50%] h-[70vh]">
-            <Skeleton className="w-full h-full bg-zinc-500" />
-          </div>
-        </div>
-      </div>
-    </CarouselItem>
-  ));
-};
+import { LoadingCarousel } from "./loading-carousel";
+import { Doc } from "../../../convex/_generated/dataModel";
+import { type CarouselApi } from "@/components/ui/carousel";
 
 interface CommunityCarouselProps {
   user?: boolean;
 }
-// add loadMore : 6:44
+
 export const CommunityCarousel = ({ user = false }: CommunityCarouselProps) => {
-  let results = undefined;
-  const { results: CommunityResult } = usePaginatedQuery(api.songs.get, {}, { initialNumItems: 8 });
-  const { results: UserProjects } = usePaginatedQuery(
-    api.songs.getUserProjects,
-    {},
-    { initialNumItems: 8 }
-  );
-  if (!user) {
-    results = CommunityResult;
-  } else {
-    results = UserProjects;
-  }
-  length = results?.length % 4 === 0 ? results?.length / 4 : Math.floor(results?.length / 4) + 1;
+  const initialItemsToShow = 3;
+  const itemsPerPage = 3;
+
+  const [carouselApi, setCarouselApi] = useState<CarouselApi>();
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
+  const [displayedItems, setDisplayedItems] = useState<Doc<"songs">[]>([]);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [hasMore, setHasMore] = useState(false);
+
+  const {
+    results: communityResults,
+    loadMore: loadMoreCommunity,
+    status: communityStatus,
+  } = usePaginatedQuery(api.songs.get, {}, { initialNumItems: initialItemsToShow });
+
+  const {
+    results: userProjects,
+    loadMore: loadMoreUser,
+    status: userStatus,
+  } = usePaginatedQuery(api.songs.getUserProjects, {}, { initialNumItems: initialItemsToShow });
+
+  const results = user ? userProjects : communityResults;
+  const loadMore = user ? loadMoreUser : loadMoreCommunity;
+  const status = user ? userStatus : communityStatus;
+
+  const pageCount = results?.length ? Math.ceil(results.length / itemsPerPage) : 0;
+
+  useEffect(() => {
+    if (carouselApi) {
+      carouselApi.on("select", () => {
+        const currentIndex = carouselApi.selectedScrollSnap();
+        setCurrentPage(currentIndex);
+      });
+    }
+  }, [carouselApi]);
+
+  useEffect(() => {
+    if (results) {
+      setDisplayedItems(results);
+      setHasMore(status !== "Exhausted");
+    }
+  }, [results, status]);
+
+  const handleLoadMore = async () => {
+    if (hasMore && !isLoadingMore) {
+      setIsLoadingMore(true);
+      try {
+        await loadMore(itemsPerPage);
+      } catch (error) {
+      } finally {
+        setIsLoadingMore(false);
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (currentPage === pageCount - 1 && hasMore) {
+      handleLoadMore();
+    }
+  }, [currentPage, pageCount, hasMore]);
 
   return (
-    <Carousel className="w-full h-full carousel">
+    <Carousel className="w-full h-full carousel" setApi={setCarouselApi}>
       <CarouselContent>
-        {results === undefined && <LoadingCarousel />}
+        {!results && <LoadingCarousel />}
         {results?.length === 0 ? (
           <CarouselItem>
             <div className="links pleaseLogIn">
@@ -73,19 +106,25 @@ export const CommunityCarousel = ({ user = false }: CommunityCarouselProps) => {
             </div>
           </CarouselItem>
         ) : (
-          Array.from({ length }).map((_, index) => (
-            <CarouselItem key={index} className="w-screen min-h-screen h-auto p-6">
+          Array.from({ length: pageCount }).map((_, index) => (
+            <CarouselItem
+              key={index}
+              className="w-screen min-h-screen h-auto p-6"
+              onClick={() => {
+                setCurrentPage(index);
+              }}
+            >
               <Cards
-                Song1={results[index * 4]}
-                Song2={results[index * 4 + 1]}
-                Song3={results[index * 4 + 2]}
+                Song1={displayedItems[index * itemsPerPage]}
+                Song2={displayedItems[index * itemsPerPage + 1]}
+                Song3={displayedItems[index * itemsPerPage + 2]}
                 user={user}
               />
             </CarouselItem>
           ))
         )}
       </CarouselContent>
-      {results && results?.length !== 0 && (
+      {results && results?.length > itemsPerPage && (
         <>
           <CarouselNext className="w-20 h-10 rounded-sm right-1 text-black" />
           <CarouselPrevious className="w-20 h-10 rounded-sm text-black" />

@@ -5,14 +5,10 @@ interface RangeSliderProps {
   max?: number;
   octaves: string[];
   selectedOctave: string;
-  setSelectedOctave: (
-    octave: string
-  ) => void;
+  setSelectedOctave: (octave: string) => void;
 }
 
-const RangeSlider: React.FC<
-  RangeSliderProps
-> = ({
+const RangeSlider: React.FC<RangeSliderProps> = ({
   min = 0,
   max = 90,
   octaves,
@@ -20,38 +16,23 @@ const RangeSlider: React.FC<
   setSelectedOctave,
 }) => {
   const [value, setValue] = useState(0);
-  const eachLength =
-    100 / (octaves?.length || 1);
-  const percentage =
-    ((value - min) / (max - min)) * 100;
+  const eachLength = 100 / (octaves?.length || 1);
+  const percentage = ((value - min) / (max - min)) * 100;
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const newValue = Number(
-      e.target.value
-    );
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = Number(e.target.value);
     setValue(newValue);
-    const octaveIndex = Math.floor(
-      newValue / eachLength
-    );
-    if (
-      octaves &&
-      octaves[octaveIndex]
-    ) {
-      setSelectedOctave(
-        octaves[octaveIndex]
-      );
+    const octaveIndex = Math.floor(newValue / eachLength);
+    if (octaves && octaves[octaveIndex]) {
+      setSelectedOctave(octaves[octaveIndex]);
     }
   };
 
   return (
-    <div className="flex flex-col items-center w-full max-w-md mx-auto">
+    <div className="flex flex-col items-center w-full mx-auto">
       <div className="flex justify-between w-full mb-2">
         <div className="flex items-center justify-center px-3 w-full py-1">
-          <span className="text-white select-none">
-            {selectedOctave || `degree`}
-          </span>
+          <span className="text-white select-none">{selectedOctave || `degree`}</span>
         </div>
       </div>
       <div className="relative w-full h-2">

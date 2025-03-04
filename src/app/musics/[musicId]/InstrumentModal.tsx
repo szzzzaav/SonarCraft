@@ -84,7 +84,7 @@ export const InstrumentModal: React.FC<InstrumentModalProps> = ({ isOpen, onClos
           </div>
         </div>
 
-        <div className="mb-4">
+        <div className="mb-4 w-full">
           <RangeSlider
             selectedOctave={selectedOctave}
             setSelectedOctave={setSelectedOctave}
@@ -99,7 +99,7 @@ export const InstrumentModal: React.FC<InstrumentModalProps> = ({ isOpen, onClos
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 w-auto h-auto">
-      <div className="bg-neutral-800 p-6 rounded-lg min-w-96">
+      <div className="bg-neutral-800 p-6 rounded-lg min-w-96 w-[40vw]">
         <h2 className="text-neutral-200 text-lg mb-4">
           <GiTunePitch />
         </h2>
