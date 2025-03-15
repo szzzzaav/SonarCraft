@@ -59,7 +59,7 @@ export const Title = () => {
             }}
           />
           <div
-            className="absolute top-0 right-0 p-[2em] text-[#fff] cursor-pointer"
+            className="absolute top-0 right-0 p-[2em] text-[#fff] cursor-pointer rounded-full bg-black/50"
             onClick={() => setOpen(false)}
           >
             <X />

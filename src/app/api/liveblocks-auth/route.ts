@@ -48,6 +48,7 @@ export async function POST(req: Request) {
     userInfo: {
       name: user.fullName ?? "Anonymous",
       avatar: user.imageUrl,
+      email: user.emailAddresses[0].emailAddress,
     },
   });
 
