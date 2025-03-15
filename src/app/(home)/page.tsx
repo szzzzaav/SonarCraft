@@ -8,6 +8,7 @@ import Community from "./community";
 import { Create } from "./create";
 import Lenis from "lenis";
 import { Bottom } from "./Bottom";
+import { DiskPlayer } from "./DiskPlayer";
 export default function Home() {
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
@@ -61,9 +62,15 @@ export default function Home() {
     <div className="min-h-screen min-w-screen">
       <GridBackground />
       <Head />
+      <DiskPlayer
+        textPrimary={["Fly to the moon now", "Fly to the moon now", "Fly to the moon now"]}
+        textSecondary="Throwback Music Vol"
+        coverImg="/images/cover.png"
+      />
       <Community />
       <Create />
       <Bottom />
+
       <div className="cursor"></div>
     </div>
   );

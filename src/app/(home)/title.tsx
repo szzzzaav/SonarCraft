@@ -17,13 +17,7 @@ export const Title = () => {
           href="#home"
           className="decoration-none color-[#fff] uppercase text-[18px] flex items-center gap-2"
         >
-          <Logo width={15} height={82} />
-        </a>
-        <a href="#community" className=" decoration-none color-[#fff] uppercase text-[18px]">
-          Community
-        </a>
-        <a href="#create" className=" decoration-none color-[#fff] uppercase text-[18px]">
-          Create
+          <span className="text-[18px]">SONAR</span>
         </a>
         <a href="#" className=" decoration-none color-[#fff] uppercase text-[18px]">
           <Unauthenticated>

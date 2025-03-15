@@ -8,7 +8,7 @@ import { toast } from "sonner";
 import { Id } from "../../../../convex/_generated/dataModel";
 import { Instrument } from "@/types/instruments";
 
-type User = { id: string; name: string; avatar: string };
+type User = { id: string; name: string; avatar: string; email: string };
 
 export function Room({
   children,
@@ -27,7 +27,12 @@ export function Room({
     () => async () => {
       try {
         const list = await getUsers();
-        setUsers(list);
+        setUsers(
+          list.map((user) => ({
+            ...user,
+            email: `${user.id}@example.com`,
+          }))
+        );
       } catch {
         toast.error("Failed to fetch users");
       }
@@ -53,7 +58,10 @@ export function Room({
         return await response.json();
       }}
       resolveUsers={({ userIds }) => {
-        return userIds.map((userId) => users.find((user) => user.id === userId) ?? undefined);
+        return userIds.map((userId) => {
+          const user = users.find((user) => user.id === userId);
+          return user ? user : undefined;
+        });
       }}
       resolveMentionSuggestions={({ text }) => {
         let filteredUsers = users;

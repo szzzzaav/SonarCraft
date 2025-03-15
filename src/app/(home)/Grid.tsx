@@ -1,12 +1,7 @@
-import {
-  useEffect,
-  useRef,
-  CSSProperties,
-} from "react";
+import { useEffect, useRef, CSSProperties } from "react";
 
 const GridBackground = () => {
-  const containerRef =
-    useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const gridStyle: CSSProperties = {
     position: "fixed",
@@ -19,14 +14,12 @@ const GridBackground = () => {
       linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
       radial-gradient(circle at center, #0a0a0a, #000000)
     `,
-    backgroundSize:
-      "40px 40px, 40px 40px, 100% 100%",
+    backgroundSize: "40px 40px, 40px 40px, 100% 100%",
     zIndex: 0,
   };
 
   useEffect(() => {
-    const style =
-      document.createElement("style");
+    const style = document.createElement("style");
 
     document.head.appendChild(style);
     return () => {
@@ -34,12 +27,7 @@ const GridBackground = () => {
     };
   }, []);
 
-  return (
-    <div
-      ref={containerRef}
-      style={gridStyle}
-    ></div>
-  );
+  return <div ref={containerRef} style={gridStyle}></div>;
 };
 
 export default GridBackground;
