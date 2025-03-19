@@ -9,11 +9,12 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { usePaginatedQuery } from "convex/react";
-import { api } from "../../../convex/_generated/api";
+import { api } from "../../../../convex/_generated/api";
 import { Cards } from "./cards";
 import { LoadingCarousel } from "./loading-carousel";
-import { Doc } from "../../../convex/_generated/dataModel";
+import { Doc } from "../../../../convex/_generated/dataModel";
 import { type CarouselApi } from "@/components/ui/carousel";
+import { toast } from "sonner";
 
 interface CommunityCarouselProps {
   user?: boolean;
@@ -69,6 +70,7 @@ export const CommunityCarousel = ({ user = false }: CommunityCarouselProps) => {
       try {
         await loadMore(itemsPerPage);
       } catch (error) {
+        toast.error("loading more failed");
       } finally {
         setIsLoadingMore(false);
       }

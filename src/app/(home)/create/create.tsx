@@ -7,7 +7,7 @@ import { twMerge } from "tailwind-merge";
 
 import { templates } from "./templates";
 import { useMutation } from "convex/react";
-import { api } from "../../../convex/_generated/api";
+import { api } from "../../../../convex/_generated/api";
 import Image from "next/image";
 
 interface CardProps {
@@ -71,6 +71,7 @@ export const Create = () => {
   const stepsRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<HTMLDivElement>(null);
   const countRef = useRef<HTMLDivElement>(null);
+  const [isClient, setIsClient] = useState(false);
 
   const templateOnClick = (title: string, initialContent: string) => {
     setIsCreating(true);
@@ -84,6 +85,14 @@ export const Create = () => {
   };
 
   useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  useEffect(() => {
+    if (!isClient || !stepsRef.current || !cardsRef.current) return;
+
+    ScrollTrigger.getAll().forEach((st) => st.kill());
+
     const stickyHeight = window.innerHeight * 7;
     const getRadius = () => {
       return window.innerWidth < 900 ? window.innerWidth * 7.5 : window.innerHeight * 2.5;
@@ -116,22 +125,31 @@ export const Create = () => {
       });
     }
 
-    ScrollTrigger.create({
-      trigger: stepsRef.current,
-      start: "top toppx",
-      end: `+=${stickyHeight}px`,
-      pin: true,
-      pinSpacing: true,
-      onUpdate: (self) => {
-        positionCards(self.progress + 0.3);
-      },
-    });
-    positionCards(0.3);
-  }, []);
+    setTimeout(() => {
+      ScrollTrigger.create({
+        trigger: stepsRef.current,
+        start: "top toppx",
+        end: `+=${stickyHeight}px`,
+        pin: true,
+        pinSpacing: true,
+        onUpdate: (self) => {
+          positionCards(self.progress + 0.3);
+        },
+      });
+      positionCards(0.3);
+
+      ScrollTrigger.refresh();
+    }, 100);
+
+    return () => {
+      ScrollTrigger.getAll().forEach((st) => st.kill());
+    };
+  }, [isClient]);
+
   return (
     <div
       id="create"
-      className="container relative h-auto  w-[100vw] p-10 flex flex-col justify-start items-center"
+      className="container relative h-auto w-[100vw] p-10 flex flex-col justify-start items-center"
       style={{
         fontFamily: "Helvetica Now Display",
       }}

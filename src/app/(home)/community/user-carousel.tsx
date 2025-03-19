@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/carousel";
 import { Skeleton } from "@/components/ui/skeleton";
 import { usePaginatedQuery } from "convex/react";
-import { api } from "../../../convex/_generated/api";
+import { api } from "../../../../convex/_generated/api";
 
 export const CommunityCarousel = () => {
   const songs = usePaginatedQuery(api.songs.get, {}, { initialNumItems: 8 });

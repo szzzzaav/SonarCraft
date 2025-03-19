@@ -1,3 +1,4 @@
+"use client";
 import { useEffect, useRef, CSSProperties } from "react";
 
 const GridBackground = () => {

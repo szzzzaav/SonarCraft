@@ -3,13 +3,11 @@ import { Draggable } from "gsap/Draggable";
 import gsap from "gsap";
 
 import Img from "./img";
-import { Title } from "./title";
 import { Landing } from "@/components/ui/landing";
 export const Head = () => {
   const timelineRef = useRef<HTMLDivElement>(null);
   const scrollerRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-  const [isFlipped, setIsFlipped] = useState(false);
   useEffect(() => {
     gsap.registerPlugin(Draggable);
     const timelineWidth = timelineRef.current?.offsetWidth || 0;
@@ -43,7 +41,6 @@ export const Head = () => {
   }, []);
   return (
     <div id="home" className="relative w-full h-[100vh]  text-[#fff]">
-      <Title />
       <div
         className="container relative top-0 left-0 min-w-[500vw] h-[90vh] flex"
         style={{
@@ -51,25 +48,6 @@ export const Head = () => {
         }}
         ref={containerRef}
       >
-        {/* <section
-          className="relative w-screen h-full flex flex-col items-center justify-center overflow-hidden"
-          style={{
-            padding: "6em 2em",
-          }}
-        >
-          <h1
-            className="flex flex-col items-center uppercase text-[120px] leading-[0.9] font-normal tracking-tight"
-            style={{
-              fontFamily: "NT Dapper, sans-serif",
-            }}
-          >
-            <span className="text-center">MUSIC STUDIO</span>
-            <span className="w-[95%] text-center">INNOVATION</span>
-            <span className="w-[60%] text-center">WITH</span>
-            <span className="w-[85%] text-center">COMMUNITY</span>
-            <span className="text-center">SPIRIT AND AI</span>
-          </h1>
-        </section> */}
         <Landing />
 
         <section

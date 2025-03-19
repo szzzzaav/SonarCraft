@@ -29,7 +29,6 @@ export const DiskPlayer = ({
       .getElementById("def-2")
       ?.setAttribute("d", document.getElementById("path-2")?.getAttribute("d")!);
   }, []);
-  // gsap
   useGSAP(
     () => {
       const animateText = (selector: string, delay: number) => {
@@ -80,7 +79,7 @@ export const DiskPlayer = ({
               key={index}
               id={`Text${index + 1}`}
               xlinkHref="#def-1"
-              startOffset="-25%"
+              startOffset="-50%"
               fill="#fff"
             >
               {text}

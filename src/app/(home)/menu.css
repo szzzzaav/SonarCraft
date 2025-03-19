@@ -1,0 +1,84 @@
+.title-menu-bar,
+.title-menu-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  padding: 0.5em;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 998;
+}
+
+.title-menu-bar {
+  position: relative;
+}
+
+.title-menu-bar a,
+.title-menu-open p {
+  color: #fff;
+  cursor: pointer;
+}
+.title-menu-close p {
+  color: #000;
+  cursor: pointer;
+}
+
+.title-menu-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  padding: 2em;
+  background-color: #c4fb45;
+  z-index: 999;
+  display: flex;
+  clip-path: polygon(0 0, 100% 0, 100% 0%, 0 0%);
+}
+
+.title-menu-close-icon {
+  flex: 2;
+  display: flex;
+  justify-content: flex-end;
+  cursor: pointer;
+}
+
+.title-menu-copy {
+  flex: 4;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-top: 2em;
+}
+
+.title-menu-preview {
+  flex: 4;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+}
+
+.title-menu-close-icon p {
+  font-size: 100px;
+  -webkit-text-stroke: 3px #c5fb45;
+  line-height: 70%;
+}
+
+.title-menu-link-item {
+  width: max-content;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+}
+
+.title-menu-link-item-holder {
+  position: relative;
+}
+
+.title-menu-link-item-holder a {
+  color: #000;
+  font-size: 80px;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 85%;
+}

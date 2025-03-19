@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Doc } from "../../../convex/_generated/dataModel";
+import { Doc } from "../../../../convex/_generated/dataModel";
 import { FaPlay } from "react-icons/fa6";
 import { DrowdownMenu } from "./DrowdownMenu";
 

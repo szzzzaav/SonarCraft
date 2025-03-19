@@ -1,6 +1,6 @@
 "use client";
 
-import { Doc } from "../../../convex/_generated/dataModel";
+import { Doc } from "../../../../convex/_generated/dataModel";
 import { SongCard } from "./song-card";
 
 interface CardsProps {
