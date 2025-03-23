@@ -35,19 +35,17 @@ export const DiskPlayer = ({
         gsap.to(selector, {
           attr: { startOffset: "100%" },
           ease: "linear",
-          duration: 8,
+          duration: 15,
           repeat: -1,
           delay: delay,
         });
       };
 
       animateText("#Text1", 0);
-      animateText("#Text2", 4);
-      animateText("#Text3", 8);
 
       gsap.to(".disk", {
         rotate: 360,
-        duration: 6,
+        duration: 15,
         repeat: -1,
         ease: "linear",
       });
@@ -112,13 +110,13 @@ export const DiskPlayer = ({
           fill="#fff"
           className="uppercase"
         >
-          <textPath id="Text5" xlinkHref="#def-2" startOffset="37%" fill="#fff">
+          {/* <textPath id="Text5" xlinkHref="#def-2" startOffset="37%" fill="#fff">
             {textSecondary}
-          </textPath>
+          </textPath> */}
         </text>
       </svg>
 
-      <div className="disk absolute top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/2 w-[550px] h-[550px] rounded-full overflow-hidden">
+      <div className="disk absolute top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] rounded-full overflow-hidden">
         <Image
           src={"/images/disk.png"}
           alt="Disk Image"

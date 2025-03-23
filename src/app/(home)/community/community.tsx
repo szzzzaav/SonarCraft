@@ -7,7 +7,7 @@ import { Authenticated, Unauthenticated, AuthLoading } from "convex/react";
 import { Logo } from "@/components/ui/logo";
 
 const Community = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
   return (
     <div id="community" className="p-5 relative min-h-[150vh] w-[100vw] bg-[#000]">
       <div
