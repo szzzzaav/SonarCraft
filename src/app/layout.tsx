@@ -20,7 +20,7 @@ export default function RootLayout({
         <ConvexClientProvider>
           <Toaster />
           {children}
-          <Cursor />
+          {/* <Cursor /> */}
         </ConvexClientProvider>
       </body>
     </html>

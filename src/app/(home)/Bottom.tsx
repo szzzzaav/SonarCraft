@@ -1,59 +1,67 @@
+import { Button } from "@/components/ui/button";
+
 export const Bottom = () => {
+  // 创建文本层，bottom值变化量逐渐减小
+  const textLayers = Array.from({ length: 12 }).map((_, index) => {
+    // 使用非线性函数计算bottom值，让间距逐渐减小
+    // 使用指数递减函数：初始间距大，后续逐渐减小
+    const bottomValue = Math.round(200 * (1 - Math.exp(-0.15 * index)));
+
+    return {
+      id: index,
+      bottom: bottomValue,
+      zIndex: 30 - index, // z-index逐渐减小
+    };
+  });
+
   return (
-    <div className="relative w-full h-[100vh] bg-black text-white flex flex-col justify-between p-10">
-      <div className="flex justify-between items-start">
-        <div>
-          <p className="text-sm font-mono">
-            SONARCRAFT LLC. ©2025
-          </p>
-          <p className="text-sm font-mono mt-2">
-            SITE BY
-            <br />
-            CREATIVE STUDIO
-          </p>
-        </div>
+    <div className="relative w-screen h-screen bg-black text-white z-10">
+      <Button
+        variant="outline"
+        className="absolute top-[200px] left-10 border border-white text-white hover:bg-white hover:text-black transition-colors duration-300 z-50"
+        onClick={() => {
+          window.scrollTo({
+            top: 0,
+            behavior: "smooth",
+          });
+        }}
+      >
+        Back to Top
+      </Button>
 
-        <div className="text-right">
-          <p className="text-sm font-mono"></p>
-          <p className="text-sm font-mono mt-2">
-            Everything
-            <br />
-            is music.
-          </p>
-        </div>
+      <div className="absolute top-[200px] right-10">
+        <ul className="space-y-4 text-right">
+          <li>
+            <a href="https://bilibili.com" className="hover:opacity-70">
+              bilibili
+            </a>
+          </li>
+          <li>
+            <a href="https://github.com" className="hover:opacity-70">
+              Github
+            </a>
+          </li>
+          <li>
+            <a href="mailto:hello@sonar.com" className="hover:opacity-70">
+              hello@sonar.com
+            </a>
+          </li>
+        </ul>
       </div>
 
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center">
-        <h1 className="text-7xl font-bold tracking-tighter mb-4">
-          JUST
+      {textLayers.map((layer) => (
+        <h1
+          key={layer.id}
+          className="absolute text-[200px] leading-[160px] font-bold tracking-tight whitespace-nowrap w-auto left-0 bg-black text-center"
+          style={{
+            letterSpacing: "5px",
+            bottom: `${layer.bottom}px`,
+            zIndex: layer.zIndex,
+          }}
+        >
+          LET'S WORK
         </h1>
-        <h1 className="text-7xl font-bold tracking-tighter">
-          ENJOY
-        </h1>
-      </div>
-
-      <div className="flex justify-between items-end">
-        <div>
-          <p className="text-sm font-mono">
-            REACH OUT
-          </p>
-          <p className="text-sm font-mono mt-2">
-            HELLO@SONARCRAFT.COM
-            <br />
-          </p>
-        </div>
-
-        <div className="text-right">
-          <p className="text-sm font-mono">
-            MAKE
-          </p>
-          <p className="text-sm font-mono mt-2">
-            MUSIC
-            <br />
-            WITH US
-          </p>
-        </div>
-      </div>
+      ))}
     </div>
   );
 };
