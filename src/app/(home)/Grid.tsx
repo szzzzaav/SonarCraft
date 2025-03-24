@@ -16,7 +16,7 @@ const GridBackground = () => {
       radial-gradient(circle at center, #0a0a0a, #000000)
     `,
     backgroundSize: "40px 40px, 40px 40px, 100% 100%",
-    zIndex: 0,
+    zIndex: -2,
   };
 
   useEffect(() => {
