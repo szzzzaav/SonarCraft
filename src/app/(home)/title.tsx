@@ -15,7 +15,7 @@ import { useState, useRef, useEffect } from "react";
 const MenuLinks = [
   { path: "/", label: "home" },
   { path: "/create", label: "create", target: "_blank" },
-  { path: "/community", label: "community&your-projects" },
+  { path: "/community", label: "community&your-work" },
   { path: "/contact", label: "contact" },
 ];
 
