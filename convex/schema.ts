@@ -23,6 +23,7 @@ export default defineSchema({
       )
     ),
     timeline: v.optional(v.number()),
+    likesCount: v.optional(v.number()),
   })
     .index("by_owner", ["ownerId"])
     .index("by_public", ["released"])
@@ -34,4 +35,50 @@ export default defineSchema({
     .searchIndex("search_owner", {
       searchField: "ownerId",
     }),
+  comments: defineTable({
+    songId: v.string(),
+    comment: v.string(),
+    ownerId: v.string(),
+    ownerName: v.string(),
+    ownerAvatar: v.string(),
+    createdAt: v.number(),
+    likesCount: v.optional(v.number()),
+    repliesCount: v.optional(v.number()),
+  })
+    .index("by_song", ["songId"])
+    .index("by_owner", ["ownerId"])
+    .index("by_created", ["createdAt"]),
+
+  commentLikes: defineTable({
+    commentId: v.string(),
+    ownerId: v.string(),
+    createdAt: v.number(),
+  })
+    .index("by_comment", ["commentId"])
+    .index("by_owner", ["ownerId"])
+    .index("by_comment_owner", ["commentId", "ownerId"]),
+
+  songLikes: defineTable({
+    songId: v.string(),
+    ownerId: v.string(),
+    createdAt: v.number(),
+  })
+    .index("by_song", ["songId"])
+    .index("by_owner", ["ownerId"]),
+
+  replies: defineTable({
+    commentId: v.string(),
+    songId: v.string(),
+    reply: v.string(),
+    ownerId: v.string(),
+    ownerName: v.string(),
+    createdAt: v.number(),
+    likesCount: v.optional(v.number()),
+    parentReplyId: v.optional(v.string()),
+  })
+    .index("by_comment", ["commentId"])
+    .index("by_song", ["songId"])
+    .index("by_owner", ["ownerId"])
+    .index("by_created", ["createdAt"])
+    .index("by_parent_reply", ["parentReplyId"]),
 });

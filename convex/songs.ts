@@ -195,3 +195,95 @@ export const getById = query({
     return song;
   },
 });
+
+export const getSongLikes = query({
+  args: { songId: v.id("songs") },
+  handler: async (ctx, { songId }) => {
+    const likes = await ctx.db
+      .query("songLikes")
+      .withIndex("by_song", (q) => q.eq("songId", songId))
+      .collect();
+    return likes.length;
+  },
+});
+
+export const hasUserLikedSong = query({
+  args: { songId: v.id("songs") },
+  handler: async (ctx, { songId }) => {
+    const user = await ctx.auth.getUserIdentity();
+    if (!user) {
+      throw new ConvexError("Unauthorized");
+    }
+
+    const like = await ctx.db
+      .query("songLikes")
+      .withIndex("by_song", (q) => q.eq("songId", songId))
+      .first();
+
+    return !!like;
+  },
+});
+
+export const likeSong = mutation({
+  args: { songId: v.id("songs") },
+  handler: async (ctx, { songId }) => {
+    const user = await ctx.auth.getUserIdentity();
+    if (!user) {
+      throw new ConvexError("Unauthorized");
+    }
+
+    const song = await ctx.db.get(songId);
+    if (!song) {
+      throw new ConvexError("Song not found");
+    }
+
+    const existingLike = await ctx.db
+      .query("songLikes")
+      .withIndex("by_song", (q) => q.eq("songId", songId))
+      .first();
+
+    if (existingLike) {
+      throw new ConvexError("Already liked");
+    }
+
+    await ctx.db.insert("songLikes", {
+      songId,
+      ownerId: user.subject,
+      createdAt: Date.now(),
+    });
+
+    const currentLikes = song.likesCount || 0;
+    return await ctx.db.patch(songId, {
+      likesCount: currentLikes + 1,
+    });
+  },
+});
+
+export const unlikeSong = mutation({
+  args: { songId: v.id("songs") },
+  handler: async (ctx, { songId }) => {
+    const user = await ctx.auth.getUserIdentity();
+    if (!user) {
+      throw new ConvexError("Unauthorized");
+    }
+
+    const song = await ctx.db.get(songId);
+    if (!song) {
+      throw new ConvexError("Song not found");
+    }
+
+    const existingLike = await ctx.db
+      .query("songLikes")
+      .withIndex("by_song", (q) => q.eq("songId", songId))
+      .first();
+
+    if (!existingLike) {
+      throw new ConvexError("Not liked yet");
+    }
+
+    await ctx.db.delete(existingLike._id);
+
+    const currentLikes = song.likesCount || 0;
+    return await ctx.db.patch(songId, { likesCount: Math.max(0, currentLikes - 1) });
+  },
+});

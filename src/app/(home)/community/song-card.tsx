@@ -2,6 +2,7 @@ import Image from "next/image";
 import { Doc } from "../../../../convex/_generated/dataModel";
 import { FaPlay } from "react-icons/fa6";
 import { DrowdownMenu } from "./DrowdownMenu";
+import { CommentDrawer } from "./CommentDrawer";
 
 interface SongCardProps {
   Song: Doc<"songs">;
@@ -18,15 +19,10 @@ export const SongCard = ({ Song, delay, user = false }: SongCardProps) => {
     return <div className="w-full h-full"></div>;
   }
   return (
-    <div
-      className="card  w-[360px] h-[90vh]"
-      style={{
-        perspective: "1000px",
-      }}
-    >
-      <div className="card-wrapper w-full h-full">
-        <div className="flip-card-inner relative w-full h-full">
-          <div className="flip-card-back w-full h-[500px] rounded-[0.8em] overflow-hidden p-[1em] bg-zinc-900 text-zinc-200 font-semibold">
+    <div className="w-[360px] min-h-[90vh] py-1">
+      <div className="w-full h-full">
+        <div className="relative w-full h-full">
+          <div className="w-full h-[500px] rounded-[0.8em] p-[1em] bg-zinc-900 text-zinc-200 font-semibold">
             <p>{Song.title}</p>
             <Image
               priority
@@ -36,7 +32,7 @@ export const SongCard = ({ Song, delay, user = false }: SongCardProps) => {
               className="rounded-[0.8em]"
               alt=""
             />
-            <div className="flex justify-between items-center p-6 ">
+            <div className="flex justify-between items-center p-6">
               <button className="transition rounded-full flex items-center bg-indigo-600 p-4 drop-shadow-sm tarnslate translte-y-1/4 group-hover:opacity-100 group-hover:translate-y-0 hover:scale-110 w-35 h-35">
                 <FaPlay className="text-black" />
               </button>
@@ -53,6 +49,9 @@ export const SongCard = ({ Song, delay, user = false }: SongCardProps) => {
                   Start With This
                 </div>
               )}
+            </div>
+            <div className="flex justify-start items-center relative">
+              <CommentDrawer song={Song} />
             </div>
           </div>
         </div>
