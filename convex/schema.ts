@@ -72,6 +72,7 @@ export default defineSchema({
     reply: v.string(),
     ownerId: v.string(),
     ownerName: v.string(),
+    ownerAvatar: v.string(),
     createdAt: v.number(),
     likesCount: v.optional(v.number()),
     parentReplyId: v.optional(v.string()),

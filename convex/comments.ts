@@ -198,6 +198,7 @@ export const replyToComment = mutation({
       createdAt: Date.now(),
       likesCount: 0,
       parentReplyId: args.parentReplyId,
+      ownerAvatar: user.pictureUrl ? String(user.pictureUrl) : "/images/cover.png",
     });
 
     const currentReplies = comment.repliesCount || 0;
