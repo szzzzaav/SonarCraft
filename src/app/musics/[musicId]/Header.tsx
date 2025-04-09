@@ -16,6 +16,7 @@ import { Doc } from "../../../../convex/_generated/dataModel";
 import { SongInput } from "./SongInput";
 import { api } from "../../../../convex/_generated/api";
 import { toast } from "sonner";
+import { AIEditModel } from "./AIEditModel";
 interface HeaderProps {
   data: Doc<"songs"> | null;
 }
@@ -26,6 +27,7 @@ const Header: React.FC<HeaderProps> = ({ data }) => {
   const mutate = useMutation(api.songs.updateDatabyId);
   const [open, setIsOpen] = useState(false);
   const [pending, setIsPending] = useState(false);
+  const [openAIModal, setOpenAIModal] = useState(false);
   const instruments = useStorage((root) => root.instruments);
   const timeline = useStorage((root) => root.timeline);
   const handleSaveClick = () => {
@@ -60,7 +62,7 @@ const Header: React.FC<HeaderProps> = ({ data }) => {
           </div>
           <div className="flex flex-row h-auto items-center w-full gap-x-4 text-md font-medium cursor-pointer hover:text-white transition text-neutral-400 py-1">
             <FaItunes />
-            <div>compose with AI</div>
+            <div onClick={() => setOpenAIModal(true)}>compose with AI</div>
           </div>
         </div>
       </div>
@@ -103,6 +105,7 @@ const Header: React.FC<HeaderProps> = ({ data }) => {
           <div>There are {userCount} other user(s) online</div>
         </div>
       </div>
+      {openAIModal && <AIEditModel open={openAIModal} setOpen={setOpenAIModal} />}
     </div>
   );
 };

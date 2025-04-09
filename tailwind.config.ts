@@ -60,6 +60,10 @@ export default {
         140: "140px",
       },
       keyframes: {
+        "caret-blink": {
+          "0%,70%,100%": { opacity: "1" },
+          "20%,50%": { opacity: "0" },
+        },
         moveInCircle: {
           "0%": {
             transform: "rotate(0deg)",
@@ -104,6 +108,7 @@ export default {
       },
       animation: {
         marquee: "marquee 5s linear infinite",
+        "caret-blink": "caret-blink 1.25s ease-out infinite",
       },
     },
   },
