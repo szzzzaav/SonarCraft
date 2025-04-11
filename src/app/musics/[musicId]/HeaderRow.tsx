@@ -61,7 +61,7 @@ const HeaderRow: React.FC<HeaderRowProps> = ({
               }}
             >
               <div className="w-[140px] h-[35px] box-border text-xs text-neutral-200 font-semibold flex items-center pl-2">
-                {timeIdx.toFixed(1)}
+                {Number(timeIdx.toFixed(1)) - 1}
               </div>
             </div>
           );
