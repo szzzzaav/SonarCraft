@@ -10,6 +10,8 @@ import { FaItunes } from "react-icons/fa";
 import { twMerge } from "tailwind-merge";
 import { generateMusicData } from "./deepseek";
 import { toast } from "sonner";
+import { Slider } from "@/components/ui/slider";
+import { showSonarHealthStatus, generateWithSonar } from "./sendToSonarAi";
 
 interface AIEditModelProps {
   open: boolean;
@@ -30,6 +32,7 @@ export const AIEditModel = ({ open, setOpen }: AIEditModelProps) => {
   const [selectedInstruments, setSelectedInstruments] = useState<Instrument[]>([]);
   const [loading, setLoading] = useState(false);
   const [generatedResults, setGeneratedResults] = useState<Instrument[]>([]);
+  const [tempeature, setTempeature] = useState(0.5);
 
   const handleGenerate = async () => {
     if (!selectedInstruments.length) {
@@ -66,7 +69,6 @@ export const AIEditModel = ({ open, setOpen }: AIEditModelProps) => {
           description: modeDescription,
         });
 
-        // Call deepseek API to generate music data
         const results = await generateMusicData(selectedInstruments, duration, from, to);
         setGeneratedResults(results);
 
@@ -79,11 +81,18 @@ export const AIEditModel = ({ open, setOpen }: AIEditModelProps) => {
             description: `New music data has been merged with existing data, adding ${duration}s of new content after ${to}s while preserving all original data.`,
           });
         }
-      } else {
-        // Handle other models if selected
-        toast("Sonar model not implemented", {
-          description: "Currently only Deepseek model is supported",
-        });
+      } else if (model === "sonar") {
+        const results = await generateWithSonar(
+          selectedInstruments,
+          from,
+          to,
+          duration,
+          tempeature
+        );
+
+        if (results) {
+          setGeneratedResults(results);
+        }
       }
     } catch (error) {
       console.error("Error generating music data:", error);
@@ -95,7 +104,6 @@ export const AIEditModel = ({ open, setOpen }: AIEditModelProps) => {
     }
   };
 
-  // Apply generated music data to instruments
   const handleApply = () => {
     if (!generatedResults.length) {
       toast("No generation results to apply", {
@@ -106,24 +114,19 @@ export const AIEditModel = ({ open, setOpen }: AIEditModelProps) => {
 
     try {
       if (instruments) {
-        // 根据所选模式处理数据
         const processedResults = generatedResults.map((instrument) => {
-          // 查找原始乐器数据
           const originalInstrument = instruments.find(
             (i) => i.instrument === instrument.instrument && i.pitch === instrument.pitch
           );
 
           if (!originalInstrument || !originalInstrument.data) {
-            return instrument; // 如果找不到原始乐器数据，直接使用生成的结果
+            return instrument;
           }
 
-          // 计算索引位置
           const fromIndex = Math.floor(from * 4);
           const toIndex = Math.ceil(to * 4);
 
           if (applyMode === "cover") {
-            // 覆盖模式：将to之后的内容替换为新生成的数据
-            // 新数据 = 原始数据前部分(0到to) + 新生成的数据(to之后)
             return {
               ...instrument,
               data: [
@@ -132,23 +135,18 @@ export const AIEditModel = ({ open, setOpen }: AIEditModelProps) => {
               ],
             };
           } else {
-            // 扩展模式：保留原始数据，并添加新生成的内容
-            // from到to之间的区域使用新生成的数据与原始数据合并
             const referenceSlice = originalInstrument.data.slice(fromIndex, toIndex);
             const combinedReferenceData = referenceSlice.map((value, index) => {
-              if (value === 1) return 1; // 保留原始数据中的1
-              if (index < instrument.data.length) return instrument.data[index]; // 否则使用新数据
-              return value; // 如果新数据不够长，保持原始值
+              if (value === 1) return 1;
+              if (index < instrument.data.length) return instrument.data[index];
+              return value;
             });
 
-            // 计算额外的新生成数据
             const durationIndex = Math.ceil(duration * 4);
             const additionalData = instrument.data.slice(0, durationIndex);
 
-            // 原始数据的尾部
             const tailPart = originalInstrument.data.slice(toIndex);
 
-            // 最终数据 = 前部分 + 合并的参考范围 + 额外数据 + 尾部分
             return {
               ...instrument,
               data: [
@@ -161,14 +159,12 @@ export const AIEditModel = ({ open, setOpen }: AIEditModelProps) => {
           }
         });
 
-        // 更新存储
         setInstruments(processedResults);
 
         toast("Application successful", {
           description: `Music data applied to selected instruments, mode: ${applyMode === "cover" ? "Cover" : "Extend"}`,
         });
 
-        // 清除生成的结果
         setGeneratedResults([]);
       }
     } catch (error) {
@@ -188,7 +184,7 @@ export const AIEditModel = ({ open, setOpen }: AIEditModelProps) => {
 
   return (
     <div className="fixed w-screen h-screen z-50 bg-zinc-800/50 flex items-center justify-center gap-4">
-      <div className="bg-zinc-900 rounded-lg w-[40%] h-[80vh] flex flex-col items-center justify-center relative gap-4">
+      <div className="bg-zinc-900 rounded-lg w-[40%] h-[80vh] flex flex-col items-center justify-center relative gap-4 py-10">
         <div className="flex items-center justify-end p-2 w-full absolute top-0 right-0">
           <Button
             variant="secondary"
@@ -206,7 +202,10 @@ export const AIEditModel = ({ open, setOpen }: AIEditModelProps) => {
               "bg-zinc-800 rounded-sm px-3 py-1 flex items-center justify-center gap-2 hover:bg-zinc-700 transition-all duration-300 cursor-pointer",
               model === "sonar" && "bg-zinc-700"
             )}
-            onClick={() => setModel("sonar")}
+            onClick={() => {
+              setModel("sonar");
+              showSonarHealthStatus();
+            }}
           >
             <span className="text-zinc-200 text-sm font-bold">SONAR</span>
             <FaItunes className="size-10 text-zinc-200" />
@@ -222,19 +221,44 @@ export const AIEditModel = ({ open, setOpen }: AIEditModelProps) => {
             <img src="/deepseek-color.svg" alt="deepseek" className="size-10" />
           </div>
         </div>
-        <div className="flex items-start flex-col justify-start gap-x-10 w-[80%]  custom-scrollbar relative overflow-auto h-[60%]">
-          <HeaderRow timeline={timeline} />
-          {instruments &&
-            instruments?.length > 0 &&
-            instruments.map((instrument) => (
-              <Row
-                key={instrument.instrument + instrument.pitch}
-                instrument={instrument}
-                setSelectedInstruments={setSelectedInstruments}
-                selectedInstruments={selectedInstruments}
-              />
-            ))}
+        <div className="h-[60%] relative w-[80%]">
+          <div className="flex items-start flex-col justify-start gap-x-10 w-full custom-scrollbar relative overflow-auto h-auto max-h-full">
+            <HeaderRow timeline={timeline} />
+            {instruments &&
+              instruments?.length > 0 &&
+              instruments.map((instrument) => (
+                <Row
+                  key={instrument.instrument + instrument.pitch}
+                  instrument={instrument}
+                  setSelectedInstruments={setSelectedInstruments}
+                  selectedInstruments={selectedInstruments}
+                />
+              ))}
+          </div>
         </div>
+
+        <div
+          className={twMerge(
+            "flex items-center justify-center gap-x-2 w-[80%] transition-all duration-300",
+            model === "deepseek" && "opacity-0 pointer-events-none"
+          )}
+        >
+          <span className="text-zinc-400 text-sm font-bold">{tempeature.toFixed(1)}</span>
+          <Slider
+            value={[tempeature]}
+            onValueChange={(value) => setTempeature(value[0])}
+            min={0}
+            max={1}
+            step={0.1}
+            className="w-[80%] bg-slate-200 rounded-sm border-zinc-700 border-[1px]"
+            style={{
+              background: "linear-gradient(to right, #000000, #ffffff)",
+            }}
+            defaultValue={[tempeature]}
+          />
+          <span className="text-zinc-400 text-sm font-bold">Tempeature</span>
+        </div>
+
         <div className="w-[80%] flex items-center justify-between">
           <div className="flex items-center justify-center gap-x-2">
             <span className="text-zinc-400 text-sm font-bold">(sec) From </span>

@@ -1,5 +1,3 @@
-import { Instrument } from "@/types/instruments";
-
 const inputData = {
   B5: [
     "1.0",
