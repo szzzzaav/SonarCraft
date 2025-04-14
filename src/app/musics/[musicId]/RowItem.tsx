@@ -28,7 +28,11 @@ const RowItem: React.FC<RowItemProps> = ({
       onClick={() => {
         setDataItem?.(instrumentIndex, index);
         const [instrument, note] = data.name.split("-");
-        playInstrumentSound(instrument, note, instrument === "drums" ? "wav" : "mp3");
+        playInstrumentSound(
+          instrument,
+          note,
+          instrument === "drums" || instrument === "bass" ? "wav" : "mp3"
+        );
         updateMyPresence({ selectedId: data.instrumentId });
       }}
       className={twMerge(

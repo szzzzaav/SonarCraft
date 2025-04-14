@@ -131,7 +131,7 @@ export const InstrumentModal: React.FC<InstrumentModalProps> = ({ isOpen, onClos
                 playInstrumentSound(
                   selectedInstrument,
                   `${selectedNote}${selectedOctave}`,
-                  selectedInstrument === "drums" ? "wav" : "mp3"
+                  selectedInstrument === "drums" || selectedInstrument === "bass" ? "wav" : "mp3"
                 );
               }
             }}

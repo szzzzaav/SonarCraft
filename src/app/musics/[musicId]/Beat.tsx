@@ -27,7 +27,7 @@ const Beat: React.FC<BeatMakerProps> = () => {
       await Tone.start();
       const sampler = new Tone.Sampler({
         urls: {
-          C4: `${instrument.pitch}.${instrument.instrument === "drums" ? "wav" : "mp3"}`,
+          C4: `${instrument.pitch}.${instrument.instrument === "drums" || instrument.instrument === "bass" ? "wav" : "mp3"}`,
         },
         baseUrl: `/sounds/${instrument.instrument}/`,
         onload: () => {
