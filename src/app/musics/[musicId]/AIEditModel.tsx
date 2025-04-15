@@ -29,6 +29,9 @@ export const AIEditModel = ({ open, setOpen }: AIEditModelProps) => {
   const [model, setModel] = useState<"sonar" | "deepseek">("sonar");
   const [applyMode, setApplyMode] = useState<"cover" | "extend">("extend");
   const timeline = useStorage((state) => state.timeline);
+  const setTimeline = useMutation(({ storage }, newTimeline: number) => {
+    storage.set("timeline", newTimeline);
+  }, []);
   const [selectedInstruments, setSelectedInstruments] = useState<Instrument[]>([]);
   const [loading, setLoading] = useState(false);
   const [generatedResults, setGeneratedResults] = useState<Instrument[]>([]);
@@ -113,65 +116,123 @@ export const AIEditModel = ({ open, setOpen }: AIEditModelProps) => {
     }
 
     try {
+      setLoading(true);
+
       if (instruments) {
-        const processedResults = generatedResults.map((instrument) => {
-          const originalInstrument = instruments.find(
-            (i) => i.instrument === instrument.instrument && i.pitch === instrument.pitch
-          );
+        // 获取当前乐器的ID映射，用于处理新乐器
+        const existingInstrumentMap = new Map<string, Instrument>();
+        instruments.forEach((inst) => {
+          existingInstrumentMap.set(`${inst.instrument}-${inst.pitch}`, inst);
+        });
 
-          if (!originalInstrument || !originalInstrument.data) {
-            return instrument;
-          }
+        // 处理生成结果
+        const updatedInstruments: Instrument[] = [];
+        const newInstruments: Instrument[] = [];
 
-          const fromIndex = Math.floor(from * 4);
-          const toIndex = Math.ceil(to * 4);
+        // 计算新的最大时长
+        let maxTimelineNeeded = timeline || 1;
 
-          if (applyMode === "cover") {
-            return {
-              ...instrument,
-              data: [
-                ...originalInstrument.data.slice(0, toIndex),
-                ...instrument.data.slice(toIndex),
-              ],
-            };
-          } else {
-            const referenceSlice = originalInstrument.data.slice(fromIndex, toIndex);
-            const combinedReferenceData = referenceSlice.map((value, index) => {
-              if (value === 1) return 1;
-              if (index < instrument.data.length) return instrument.data[index];
-              return value;
+        generatedResults.forEach((result) => {
+          const key = `${result.instrument}-${result.pitch}`;
+          const existingInstrument = existingInstrumentMap.get(key);
+
+          if (existingInstrument) {
+            // 处理现有乐器
+            const fromIndex = Math.floor(from * 4);
+            const toIndex = Math.ceil(to * 4);
+
+            let newData: number[];
+
+            if (applyMode === "cover") {
+              // Cover模式：替换to之后的所有数据
+              newData = [
+                ...existingInstrument.data.slice(0, toIndex),
+                ...result.data.slice(toIndex),
+              ];
+            } else {
+              // Extend模式：在to位置插入生成的数据，保留原始数据
+              const generatedSegment = result.data.slice(
+                toIndex,
+                toIndex + Math.ceil(duration * 4)
+              );
+              newData = [
+                ...existingInstrument.data.slice(0, toIndex),
+                ...generatedSegment,
+                ...existingInstrument.data.slice(toIndex),
+              ];
+            }
+
+            // 更新乐器数据
+            updatedInstruments.push({
+              ...existingInstrument,
+              data: newData,
             });
 
-            const durationIndex = Math.ceil(duration * 4);
-            const additionalData = instrument.data.slice(0, durationIndex);
+            // 更新所需的timeline
+            const requiredTimeline = Math.ceil(newData.length / 16);
+            maxTimelineNeeded = Math.max(maxTimelineNeeded, requiredTimeline);
 
-            const tailPart = originalInstrument.data.slice(toIndex);
+            // 从Map中移除已处理的乐器
+            existingInstrumentMap.delete(key);
+          } else {
+            // 处理新乐器
+            // 确保生成的结果符合当前的时间轴要求
+            let newData = result.data;
 
-            return {
-              ...instrument,
-              data: [
-                ...originalInstrument.data.slice(0, fromIndex),
-                ...combinedReferenceData,
-                ...additionalData,
-                ...tailPart,
-              ],
-            };
+            // 计算新乐器所需的timeline
+            const requiredTimeline = Math.ceil(newData.length / 16);
+            maxTimelineNeeded = Math.max(maxTimelineNeeded, requiredTimeline);
+
+            newInstruments.push(result);
           }
         });
 
-        setInstruments(processedResults);
+        // 处理未修改的原始乐器
+        existingInstrumentMap.forEach((instrument) => {
+          if (applyMode === "extend") {
+            // 在extend模式下，需要为所有未修改的乐器在to位置插入空白数据
+            const toIndex = Math.ceil(to * 4);
+            const insertLength = Math.ceil(duration * 4);
 
-        toast("Application successful", {
-          description: `Music data applied to selected instruments, mode: ${applyMode === "cover" ? "Cover" : "Extend"}`,
+            const newData = [
+              ...instrument.data.slice(0, toIndex),
+              ...Array(insertLength).fill(0),
+              ...instrument.data.slice(toIndex),
+            ];
+
+            updatedInstruments.push({
+              ...instrument,
+              data: newData,
+            });
+          } else {
+            // cover模式下保持原样
+            updatedInstruments.push(instrument);
+          }
         });
 
+        // 合并所有乐器并更新
+        const finalInstruments = [...updatedInstruments, ...newInstruments];
+
+        // 更新timeline
+        setTimeline(maxTimelineNeeded);
+
+        // 更新乐器
+        setInstruments(finalInstruments);
+
+        toast.success(`Applied ${applyMode === "cover" ? "Cover" : "Extend"} mode changes`, {
+          description: `${updatedInstruments.length} instruments updated, ${newInstruments.length} new instruments added. Timeline: ${maxTimelineNeeded}`,
+        });
+
+        // 清除生成结果
         setGeneratedResults([]);
       }
     } catch (error) {
-      console.error("Error applying music data:", error);
-      toast("Application failed", {
-        description: "Please try again later",
+      console.error("Error applying changes:", error);
+      toast.error("Failed to apply changes", {
+        description: "An error occurred while applying the changes",
       });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -340,6 +401,13 @@ export const AIEditModel = ({ open, setOpen }: AIEditModelProps) => {
                           className={`w-[35px] h-[35px] box-border text-xs border-[1px] flex items-center justify-center rounded-sm ${
                             note ? "bg-indigo-500" : "bg-zinc-800"
                           } ${borderColor}`}
+                          style={{
+                            ...(timeInSeconds >= to &&
+                              timeInSeconds < to + duration &&
+                              applyMode === "extend" && {
+                                boxShadow: "inset 0 0 2px 2px rgba(72, 187, 120, 0.3)",
+                              }),
+                          }}
                         >
                           {index % 4 === 0 ? Math.floor(index / 4) : ""}
                         </div>
@@ -451,14 +519,16 @@ export const AIEditModel = ({ open, setOpen }: AIEditModelProps) => {
                 variant="outline"
                 className="bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border-zinc-700"
                 onClick={handleCancel}
+                disabled={loading}
               >
                 Cancel
               </Button>
               <Button
                 className="bg-green-600 hover:bg-green-500 transition-all duration-300 shadow-sm"
                 onClick={handleApply}
+                disabled={loading}
               >
-                Apply
+                {loading ? "Applying..." : "Apply"}
               </Button>
             </div>
           </>
