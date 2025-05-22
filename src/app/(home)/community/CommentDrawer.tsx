@@ -202,7 +202,7 @@ const Comment = ({ comment }: { comment: Doc<"comments"> }) => {
         reply: replyText,
       });
       setReplyText("");
-      setShowReplies(true); // 自动显示回复列表
+      setShowReplies(true);
       toast.success("Reply sent");
     } catch (error) {
       toast.error("Reply failed", {

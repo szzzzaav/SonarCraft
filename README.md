@@ -1,36 +1,49 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Melody Editor
 
-## Getting Started
+一个基于Next.js构建的实时协同音乐创作平台，集成AI辅助创作与社区互动功能。
 
-First, run the development server:
+## 项目概述
+
+该平台旨在降低音乐创作门槛，使非专业用户能够轻松创作结构合理的音乐作品，同时满足专业用户的需求。系统提供直观的网格化时序界面、AI辅助创作和实时协同编辑功能，打造完整的音乐创作生态系统。
+
+## 核心功能
+
+- **基础音乐编辑**：网格化界面，点击添加或删除音符，支持多种乐器轨道
+- **实时协同创作**：多人同时编辑同一音乐项目，操作实时同步
+- **AI辅助创作**：集成DeepSeek AI和自建模型，智能生成音乐内容
+- **团队协作管理**：创建组织团队，设置项目权限，团队内共享资源
+- **社区互动系统**：作品发布、点赞、评论、回复等社交功能
+
+## 技术栈
+
+- **前端框架**：Next.js 15，React 19
+- **样式**：Tailwind CSS，Radix UI组件
+- **音频处理**：Tone.js音频引擎，采样器技术
+- **实时协作**：Liveblocks实时协作引擎
+- **后端服务**：Convex数据库，FastAPI (AI音乐生成)
+- **AI集成**：DeepSeek API，自建Transformer音乐生成模型
+- **认证系统**：Clerk身份验证
+
+## 数据结构
+
+系统采用创新的二进制网格数组表示音乐数据，每个格点"1"代表有音符，"0"代表无音符，使数据结构极其精简且便于协同编辑。
+
+## 快速开始
+
+首先，安装依赖：
+
+```bash
+npm install
+```
+
+然后，运行开发服务器：
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+在浏览器中打开 [http://localhost:3000](http://localhost:3000) 查看应用。
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 环境要求
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Node.js 18.0+

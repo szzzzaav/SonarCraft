@@ -27,12 +27,7 @@ export function Room({
     () => async () => {
       try {
         const list = await getUsers();
-        setUsers(
-          list.map((user) => ({
-            ...user,
-            email: `${user.id}@example.com`,
-          }))
-        );
+        setUsers(list);
       } catch {
         toast.error("Failed to fetch users");
       }
@@ -84,7 +79,15 @@ export function Room({
       <RoomProvider
         id={params.musicId as string}
         initialStorage={{ timeline, instruments }}
-        initialPresence={{ selectedId: 0 }}
+        initialPresence={
+          {
+            selectedId: 0,
+            editingTrack: {
+              instrumentId: null,
+              instrumentName: "",
+            },
+          } as any
+        }
       >
         <ClientSideSuspense fallback={"Room Loading..."}>{children}</ClientSideSuspense>
       </RoomProvider>

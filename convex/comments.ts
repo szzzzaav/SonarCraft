@@ -38,7 +38,7 @@ export const createComment = mutation({
       comment: args.comment,
       ownerAvatar: user.pictureUrl ? String(user.pictureUrl) : "/images/cover.png",
       ownerId: user.subject,
-      ownerName: user.name ?? user.email ?? "Anonymous User",
+      ownerName: user.name ?? user.email ?? user.subject ?? "Anonymous User",
       createdAt: Date.now(),
       likesCount: 0,
       repliesCount: 0,
@@ -188,13 +188,12 @@ export const replyToComment = mutation({
         throw new ConvexError("Parent reply not found");
       }
     }
-
     await ctx.db.insert("replies", {
       commentId: args.commentId,
       songId: args.songId,
       reply: args.reply,
       ownerId: user.subject,
-      ownerName: user.name ?? "Anonymous User",
+      ownerName: user.name ?? user.email ?? user.subject ?? "Anonymous User",
       createdAt: Date.now(),
       likesCount: 0,
       parentReplyId: args.parentReplyId,

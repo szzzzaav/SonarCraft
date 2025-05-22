@@ -21,6 +21,7 @@ export async function getUsers() {
     id: user.id,
     name: user.fullName ?? user.primaryEmailAddress?.emailAddress ?? "Anonymous",
     avatar: user.imageUrl,
+    email: user.primaryEmailAddress?.emailAddress ?? `${user.id}@example.com`,
   }));
 
   return users;

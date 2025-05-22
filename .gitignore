@@ -11,8 +11,6 @@
 !.yarn/versions
 /api.py
 
-# testings
-/coverage
 
 # next.js
 /.next/
@@ -32,11 +30,11 @@ yarn-error.log*
 .pnpm-debug.log*
 
 # env files (can opt-in for committing if needed)
-.env*
+# .env*
 
 # vercel
 .vercel
 
 # typescript
-*.tsbuildinfo
-next-env.d.ts
+# *.tsbuildinfo
+# next-env.d.ts

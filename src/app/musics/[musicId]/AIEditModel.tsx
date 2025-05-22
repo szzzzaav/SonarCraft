@@ -190,7 +190,6 @@ export const AIEditModel = ({ open, setOpen }: AIEditModelProps) => {
         // 处理未修改的原始乐器
         existingInstrumentMap.forEach((instrument) => {
           if (applyMode === "extend") {
-            // 在extend模式下，需要为所有未修改的乐器在to位置插入空白数据
             const toIndex = Math.ceil(to * 4);
             const insertLength = Math.ceil(duration * 4);
 
@@ -205,25 +204,20 @@ export const AIEditModel = ({ open, setOpen }: AIEditModelProps) => {
               data: newData,
             });
           } else {
-            // cover模式下保持原样
             updatedInstruments.push(instrument);
           }
         });
 
-        // 合并所有乐器并更新
         const finalInstruments = [...updatedInstruments, ...newInstruments];
 
-        // 更新timeline
         setTimeline(maxTimelineNeeded);
 
-        // 更新乐器
         setInstruments(finalInstruments);
 
         toast.success(`Applied ${applyMode === "cover" ? "Cover" : "Extend"} mode changes`, {
           description: `${updatedInstruments.length} instruments updated, ${newInstruments.length} new instruments added. Timeline: ${maxTimelineNeeded}`,
         });
 
-        // 清除生成结果
         setGeneratedResults([]);
       }
     } catch (error) {
@@ -334,7 +328,7 @@ export const AIEditModel = ({ open, setOpen }: AIEditModelProps) => {
               value={to}
               onChange={(e) => setTo(Number(e.target.value))}
             />
-            <span className="text-zinc-400 text-sm font-bold">Duration (sec)</span>
+            <span className="text-zinc-400 text-sm font-bold">Generate Length (sec)</span>
             <Input
               className="w-[40px] p-2"
               value={duration}
@@ -384,7 +378,6 @@ export const AIEditModel = ({ open, setOpen }: AIEditModelProps) => {
                   </div>
                   <div className="flex items-center">
                     {instrument.data.map((note, index) => {
-                      // Convert index to time in seconds
                       const timeInSeconds = index / 4;
 
                       let borderColor = "border-zinc-700"; // default
@@ -429,8 +422,8 @@ export const AIEditModel = ({ open, setOpen }: AIEditModelProps) => {
           <>
             <div className="flex items-center justify-between w-full mt-2">
               <div className="flex flex-col gap-2 w-full">
-                <p className="text-zinc-400 text-xs">Select application mode:</p>
-                <div className="flex items-center gap-4">
+                <p className="text-zinc-400 text-xs">How to apply the generated data:</p>
+                <div className="flex flex-col items-start gap-4">
                   <div
                     className={`flex items-center gap-1 cursor-pointer px-3 py-1 rounded-sm ${applyMode === "extend" ? "bg-zinc-700" : "bg-zinc-800"}`}
                     onClick={() => setApplyMode("extend")}
@@ -440,8 +433,10 @@ export const AIEditModel = ({ open, setOpen }: AIEditModelProps) => {
                       checked={applyMode === "extend"}
                       onCheckedChange={() => setApplyMode("extend")}
                     />
-                    <span className="text-zinc-300 text-sm">Extend </span>
-                    <span className="text-zinc-500 text-xs">(Preserve original data)</span>
+                    <span className="text-zinc-300 text-base">Insert </span>
+                    <span className="text-zinc-500 text-sm">
+                      (Insert generated data after 'to' and connect with original data)
+                    </span>
                   </div>
                   <div
                     className={`flex items-center gap-1 cursor-pointer px-3 py-1 rounded-sm ${applyMode === "cover" ? "bg-zinc-700" : "bg-zinc-800"}`}
@@ -452,8 +447,8 @@ export const AIEditModel = ({ open, setOpen }: AIEditModelProps) => {
                       checked={applyMode === "cover"}
                       onCheckedChange={() => setApplyMode("cover")}
                     />
-                    <span className="text-zinc-300 text-sm">Cover </span>
-                    <span className="text-zinc-500 text-xs">(Replace content after 'to')</span>
+                    <span className="text-zinc-300 text-base">Cover </span>
+                    <span className="text-zinc-500 text-sm">(Replace content after 'to')</span>
                   </div>
                 </div>
 
@@ -491,7 +486,7 @@ export const AIEditModel = ({ open, setOpen }: AIEditModelProps) => {
                       {/* Original tail */}
                       <div className="w-5 h-5 border border-blue-500 bg-zinc-800"></div>
                       <div className="w-5 h-5 border border-blue-500 bg-zinc-800"></div>
-                      <span className="text-zinc-400 text-xs ml-1">Extend</span>
+                      <span className="text-zinc-400 text-xs ml-1">Insert</span>
                     </div>
                   </div>
 

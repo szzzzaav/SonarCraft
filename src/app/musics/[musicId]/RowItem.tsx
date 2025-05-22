@@ -14,6 +14,15 @@ interface RowItemProps {
   isCurrentBeat?: boolean;
 }
 
+// 定义我们的Presence类型
+interface MyPresence {
+  selectedId: number | null;
+  editingTrack: {
+    instrumentId: number | null;
+    instrumentName: string;
+  };
+}
+
 const RowItem: React.FC<RowItemProps> = ({
   className,
   data,
@@ -33,7 +42,14 @@ const RowItem: React.FC<RowItemProps> = ({
           note,
           instrument === "drums" || instrument === "bass" ? "wav" : "mp3"
         );
-        updateMyPresence({ selectedId: data.instrumentId });
+        // 更新当前用户的presence，包含正在编辑的音轨信息
+        updateMyPresence({
+          selectedId: data.instrumentId,
+          editingTrack: {
+            instrumentId: data.instrumentId,
+            instrumentName: data.name,
+          },
+        } as Partial<MyPresence>);
       }}
       className={twMerge(
         "w-[35px] h-[35px] box-border text-xs border-[1px] flex items-center justify-center transition",

@@ -5,6 +5,7 @@ import Header from "./Header";
 import Beat from "./Beat";
 import { Room } from "./Room";
 import { Threads } from "./threads";
+import EditNotification from "./EditNotification";
 import { Preloaded, usePreloadedQuery } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
 import { Instrument } from "@/types/instruments";
@@ -25,6 +26,7 @@ export const Music = ({ preloadedSong }: SongProps) => {
             <Beat />
             <Threads />
           </div>
+          <EditNotification />
         </Room>
       </div>
     </>
