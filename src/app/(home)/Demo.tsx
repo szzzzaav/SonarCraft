@@ -196,7 +196,7 @@ export const Sticky = () => {
               </div>
               <div className="w-full h-[450px] p-3 rounded-2xl bg-zinc-800 gap-y-3 flex flex-col items-center justify-center">
                 <Image
-                  src="/images/code.png"
+                  src="/images/code.webp"
                   alt="code"
                   className="object-cover w-[800px] h-[450px] rounded-2xl"
                   width={800}

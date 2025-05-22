@@ -259,11 +259,11 @@ body::-webkit-scrollbar {
 
 .landing-board-tile-front::before,
 .landing-board-tile-front-inner {
-  background-image: url("/images/landing/font.png");
+  background-image: url("/images/landing/font.webp");
 }
 
 .landing-board-tile-back::before {
-  background-image: url("/images/landing/back.png");
+  background-image: url("/images/landing/back.webp");
 }
 
 .landing-board-block {

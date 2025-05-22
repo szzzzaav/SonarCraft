@@ -26,7 +26,7 @@ export function Threads() {
             <div className="text-[#000] text-2xl font-semibold w-[38vw] h-[80vh] flex items-center justify-between flex-col p-10">
               <div className="flex w-full items-center justify-start gap-4">
                 <Image
-                  src="/images/cover.png"
+                  src="/images/cover.webp"
                   alt="logo"
                   width={60}
                   height={60}

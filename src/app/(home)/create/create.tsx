@@ -38,7 +38,7 @@ const Card = ({ img, description, empty, onClick }: CardProps) => {
         onMouseLeave={() => setShow(false)}
       >
         <Image
-          src={img || "/images/create/1.png"}
+          src={img || "/images/create/1.webp"}
           alt=""
           className={twMerge(
             "w-full h-full object-cover  transition-all duration-300",

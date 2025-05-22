@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Draggable } from "gsap/Draggable";
 import gsap from "gsap";
 
-import Img from "./img";
+import { OptimizedImage } from "@/components/ui/image";
 import { Landing } from "@/components/ui/landing";
 export const Head = () => {
   const timelineRef = useRef<HTMLDivElement>(null);
@@ -56,14 +56,32 @@ export const Head = () => {
             padding: "6em 2em 0 2em",
           }}
         >
-          <div>
-            <Img className="flex-[2]" src="/images/header/1.png" alt="" />
+          <div className="flex-[2]">
+            <OptimizedImage
+              src="/images/header/1.webp"
+              alt="音乐创作界面"
+              fill
+              className="h-full"
+              sizes="(max-width: 768px) 100vw, 33vw"
+            />
           </div>
-          <div>
-            <Img className="flex-[1]" src="/images/header/2.png" alt="" />
+          <div className="flex-[1]">
+            <OptimizedImage
+              src="/images/header/2.webp"
+              alt="音乐编辑器"
+              fill
+              className="h-full"
+              sizes="(max-width: 768px) 100vw, 33vw"
+            />
           </div>
-          <div>
-            <Img className="flex-[1]" src="/images/header/3.png" alt="" />
+          <div className="flex-[1]">
+            <OptimizedImage
+              src="/images/header/3.webp"
+              alt="音乐社区"
+              fill
+              className="h-full"
+              sizes="(max-width: 768px) 100vw, 33vw"
+            />
           </div>
         </section>
 
@@ -73,14 +91,32 @@ export const Head = () => {
             padding: "6em 2em 0 2em",
           }}
         >
-          <div>
-            <Img className="flex-[1]" src="/images/header/4.png" alt="" />
+          <div className="flex-[1]">
+            <OptimizedImage
+              src="/images/header/4.webp"
+              alt="AI作曲"
+              fill
+              className="h-full"
+              sizes="(max-width: 768px) 100vw, 33vw"
+            />
           </div>
-          <div>
-            <Img className="flex-[2]" src="/images/header/5.png" alt="" />
+          <div className="flex-[2]">
+            <OptimizedImage
+              src="/images/header/5.webp"
+              alt="协同编辑"
+              fill
+              className="h-full"
+              sizes="(max-width: 768px) 100vw, 33vw"
+            />
           </div>
-          <div>
-            <Img className="flex-[1]" src="/images/header/6.png" alt="" />
+          <div className="flex-[1]">
+            <OptimizedImage
+              src="/images/header/6.webp"
+              alt="乐器选择"
+              fill
+              className="h-full"
+              sizes="(max-width: 768px) 100vw, 33vw"
+            />
           </div>
         </section>
         <section
@@ -109,14 +145,32 @@ export const Head = () => {
             padding: "6em 2em 0 2em",
           }}
         >
-          <div>
-            <Img className="flex-[1]" src="/images/header/7.png" alt="" />
+          <div className="flex-[1]">
+            <OptimizedImage
+              src="/images/header/7.webp"
+              alt="音乐分享"
+              fill
+              className="h-full"
+              sizes="(max-width: 768px) 100vw, 33vw"
+            />
           </div>
-          <div>
-            <Img className="flex-[2]" src="/images/header/8.png" alt="" />
+          <div className="flex-[2]">
+            <OptimizedImage
+              src="/images/header/8.webp"
+              alt="团队协作"
+              fill
+              className="h-full"
+              sizes="(max-width: 768px) 100vw, 33vw"
+            />
           </div>
-          <div>
-            <Img className="flex-[1]" src="/images/header/9.png" alt="" />
+          <div className="flex-[1]">
+            <OptimizedImage
+              src="/images/header/9.webp"
+              alt="音乐评论"
+              fill
+              className="h-full"
+              sizes="(max-width: 768px) 100vw, 33vw"
+            />
           </div>
         </section>
       </div>

@@ -10,14 +10,14 @@ export const Landing = () => {
       }}
     >
       <div className="w-full h-full rounded-2xl relative">
-        <Img src="/images/landing/landing.png" alt="" className="rounded-2xl overflow-hidden" />
+        <Img src="/images/landing/landing.webp" alt="" className="rounded-2xl overflow-hidden" />
         <div className="backdrop-blur-0 absolute top-0 left-0 w-full h-full bg-black/50"></div>
 
         <div className="w-full h-auto flex items-center justify-center absolute bottom-20 z-10">
           <div className="w-[1000px] h-[200px] flex items-center justify-center gap-0 relative">
             <div className="w-[200px] h-[200px]">
               <Image
-                src="/images/landing/S.png"
+                src="/images/landing/S.webp"
                 alt=""
                 width={200}
                 height={200}
@@ -26,7 +26,7 @@ export const Landing = () => {
             </div>
             <div className="w-[200px] h-[200px]">
               <Image
-                src="/images/landing/O.png"
+                src="/images/landing/O.webp"
                 alt=""
                 width={200}
                 height={200}
@@ -35,7 +35,7 @@ export const Landing = () => {
             </div>
             <div className="w-[200px] h-[200px]">
               <Image
-                src="/images/landing/N.png"
+                src="/images/landing/N.webp"
                 alt=""
                 width={200}
                 height={200}
@@ -44,7 +44,7 @@ export const Landing = () => {
             </div>
             <div className="w-[200px] h-[200px]">
               <Image
-                src="/images/landing/A.png"
+                src="/images/landing/A.webp"
                 alt=""
                 width={200}
                 height={200}
@@ -53,7 +53,7 @@ export const Landing = () => {
             </div>
             <div className="w-[200px] h-[200px]">
               <Image
-                src="/images/landing/R.png"
+                src="/images/landing/R.webp"
                 alt=""
                 width={200}
                 height={200}

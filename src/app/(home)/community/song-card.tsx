@@ -26,7 +26,7 @@ export const SongCard = ({ Song, delay, user = false }: SongCardProps) => {
             <p>{Song.title}</p>
             <Image
               priority
-              src={Song.imgPath || "/images/create/5.png"}
+              src={Song.imgPath || "/images/create/5.webp"}
               width={500}
               height={500}
               className="rounded-[0.8em]"

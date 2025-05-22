@@ -36,7 +36,7 @@ export const createComment = mutation({
     return await ctx.db.insert("comments", {
       songId: args.songId,
       comment: args.comment,
-      ownerAvatar: user.pictureUrl ? String(user.pictureUrl) : "/images/cover.png",
+      ownerAvatar: user.pictureUrl ? String(user.pictureUrl) : "/images/cover.webp",
       ownerId: user.subject,
       ownerName: user.name ?? user.email ?? user.subject ?? "Anonymous User",
       createdAt: Date.now(),
@@ -197,7 +197,7 @@ export const replyToComment = mutation({
       createdAt: Date.now(),
       likesCount: 0,
       parentReplyId: args.parentReplyId,
-      ownerAvatar: user.pictureUrl ? String(user.pictureUrl) : "/images/cover.png",
+      ownerAvatar: user.pictureUrl ? String(user.pictureUrl) : "/images/cover.webp",
     });
 
     const currentReplies = comment.repliesCount || 0;
